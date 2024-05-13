@@ -1,5 +1,6 @@
 ﻿using Account.Service.Application;
 using Account.Service.Application.CommandHandlers;
+using Account.Service.Application.QueryHandlers;
 using Account.Service.Domain;
 using Account.Service.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ namespace Account.Service
             });
             services.AddScoped<IAccountDbContext, AccountDbContext>();
             services.AddMediatR(x => { x.RegisterServicesFromAssembly(typeof(AddAccountCommandHandler).Assembly); });
+            services.AddMediatR(x => { x.RegisterServicesFromAssembly(typeof(GetByIdAccountQueryHandler).Assembly); });
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             return services;
         }

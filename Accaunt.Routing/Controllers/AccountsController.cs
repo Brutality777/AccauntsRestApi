@@ -1,4 +1,6 @@
 ﻿using Account.Contracts.Commands;
+using Account.Contracts.Queries;
+using Account.Contracts.Queries.Dtos;
 using Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +27,19 @@ namespace Account.Routing.Controllers
         [SwaggerOperation(Summary = "Create an account",Description = "Registarte an account using name and checks everything to be good",OperationId = "AddAccount")]
         [SwaggerResponse(StatusCodes.Status200OK,"Account is created succefully",typeof(int))]
         public async Task<IResult> AddAccount([FromBody] AddAccountCommand dto)
+        {
+            var result = await _mediator.Send(dto);
+            if (!result.IsSuccess)
+            {
+                return result.ToProblemDetails();
+            }
+            return Results.Ok(result.Value);
+        }
+
+        [HttpGet]
+        [SwaggerOperation(Summary = "Get an account by its id", Description = "Gets standart info about account by its id", OperationId = "GetAccountById")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Found account", typeof(StandartAccountInfo))]
+        public async Task<IResult> GetAccountById([FromBody] GetByIdAccountQuery dto)
         {
             var result = await _mediator.Send(dto);
             if (!result.IsSuccess)
