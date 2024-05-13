@@ -7,7 +7,7 @@ namespace Account.Contracts.Queries
 {
     public class GetByIdAccountQuery : IRequest<Result<StandartAccountInfo>>
     {
-        public int id;
+        public int id { get; set; }
     }
 
     public class GetByIdAccountQueryValidator : AbstractValidator<GetByIdAccountQuery>

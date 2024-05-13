@@ -7,7 +7,6 @@ namespace Account.Routing
     {
         public static IServiceCollection AddAccountRouting(this IServiceCollection services, IConfiguration configuration)
         {
-
             return services;
         }
     }

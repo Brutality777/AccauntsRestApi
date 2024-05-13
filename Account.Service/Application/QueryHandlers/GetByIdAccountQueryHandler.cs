@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Account.Contracts.Queries.Dtos;
 using Account.Contracts.Queries;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Account.Service.Application.QueryHandlers
 {
@@ -28,12 +29,11 @@ namespace Account.Service.Application.QueryHandlers
 
         public async Task<Result<StandartAccountInfo>> Handle(GetByIdAccountQuery request, CancellationToken cancellationToken)
         {
-            var acc =_accDbContext.Accounts.Where(x => x.Id == request.id).ProjectTo<StandartAccountInfo>(_mapper.ConfigurationProvider).FirstOrDefault();
+            var acc = await _accDbContext.Accounts.Where(x => x.Id == request.id).ProjectTo<StandartAccountInfo>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
             if (acc == null)
             {
                 return Result.Fail("User with this id does not exists");
             }
-
             return Result.Ok(acc);
 
         }
