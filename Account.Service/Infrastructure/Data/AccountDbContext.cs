@@ -13,6 +13,8 @@ namespace Account.Service.Infrastructure.Data
     internal class AccountDbContext : DbContext, IAccountDbContext
     {
         public DbSet<AccountDataModel> Accounts { get; set; }
+        DbSet<CompanyAccountRelationDataModel> CompaniesRelation { get; set; }
+        public DbSet<CompanyDataModel> Companies { get; set; }
 
         public AccountDbContext(DbContextOptions<AccountDbContext> dbContextOptions) : base(dbContextOptions)
         {
@@ -43,6 +45,13 @@ namespace Account.Service.Infrastructure.Data
                                 break;
                         }
 
+                        break;
+                    case CompanyAccountRelationDataModel trackable:
+                        switch(entry.State) {
+                            case EntityState.Added:
+                                trackable.JoinDate = DateTime.UtcNow;
+                                break;
+                        }
                         break;
                 }
             }
